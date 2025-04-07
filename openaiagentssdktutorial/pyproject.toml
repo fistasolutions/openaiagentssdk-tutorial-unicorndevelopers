@@ -1,0 +1,20 @@
+[project]
+name = "openaiagentssdktutorial"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "“fistasolutions”", email = "fistasolutions@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "dotenv>=0.9.9",
+    "openai-agents>=0.0.8",
+]
+
+[project.scripts]
+openaiagentssdktutorial = "openaiagentssdktutorial:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
