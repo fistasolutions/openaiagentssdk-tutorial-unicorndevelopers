@@ -60,20 +60,23 @@ This section:
 
 ## Step 4: Creating Your AI Assistant 🧠
 ```python
-agent = Agent(
-    name="Assistant",
-    instructions="You are helpful Assistent.",
-    model=model
-)
+async def main():
+    agent = Agent(
+        name="Assistant",
+        instructions="You are helpful Assistent.",
+        model=model
+    )
 ```
 This creates your AI friend and:
 - Gives it a name: "Assistant"
 - Tells it how to behave: "Be helpful"
 - Sets which AI brain to use: Google's Gemini 2.0 Flash model
 
+Note that this is inside an async function called `main()`, which is necessary for using the async/await pattern.
+
 ## Step 5: Asking the AI About Recursion 🔄
 ```python
-result = await Runner.run(agent, "Tell me about recursion in programming.", run_config=config)
+    result = await Runner.run(agent, "Tell me about recursion in programming.", run_config=config)
 ```
 This line:
 - Sends your question to the AI
@@ -82,9 +85,17 @@ This line:
 
 ## Step 6: Showing the AI's Answer 📝
 ```python
-print(result.final_output)
+    print(result.final_output)
+    # Function calls itself,
+    # Looping in smaller pieces,
+    # Endless by design.
 ```
 This displays the explanation about recursion that the AI provided!
+
+The comments after the print statement are a poetic description of recursion:
+- "Function calls itself" - the basic definition of recursion
+- "Looping in smaller pieces" - how recursion breaks down problems
+- "Endless by design" - the potential for infinite recursion if not properly controlled
 
 ## Step 7: Running the Async Code 🚀
 ```python
