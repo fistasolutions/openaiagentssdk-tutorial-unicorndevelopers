@@ -1,0 +1,17 @@
+
+    digraph G {
+        graph [splines=true];
+        node [fontname="Arial"];
+        edge [penwidth=1.5];
+    "__start__" [label="__start__", shape=ellipse, style=filled, fillcolor=lightblue, width=0.5, height=0.3];"__end__" [label="__end__", shape=ellipse, style=filled, fillcolor=lightblue, width=0.5, height=0.3];"Triage Assistant" [label="Triage Assistant", shape=box, style=filled, fillcolor=lightyellow, width=1.5, height=0.8];"get_weather" [label="get_weather", shape=ellipse, style=filled, fillcolor=lightgreen, width=0.5, height=0.3];"translate_text" [label="translate_text", shape=ellipse, style=filled, fillcolor=lightgreen, width=0.5, height=0.3];"Spanish Assistant" [label="Spanish Assistant", shape=box, style=filled, style=rounded, fillcolor=lightyellow, width=1.5, height=0.8];"__start__" [label="__start__", shape=ellipse, style=filled, fillcolor=lightblue, width=0.5, height=0.3];"__end__" [label="__end__", shape=ellipse, style=filled, fillcolor=lightblue, width=0.5, height=0.3];"Spanish Assistant" [label="Spanish Assistant", shape=box, style=filled, fillcolor=lightyellow, width=1.5, height=0.8];"Technical Expert" [label="Technical Expert", shape=box, style=filled, style=rounded, fillcolor=lightyellow, width=1.5, height=0.8];"__start__" [label="__start__", shape=ellipse, style=filled, fillcolor=lightblue, width=0.5, height=0.3];"__end__" [label="__end__", shape=ellipse, style=filled, fillcolor=lightblue, width=0.5, height=0.3];"Technical Expert" [label="Technical Expert", shape=box, style=filled, fillcolor=lightyellow, width=1.5, height=0.8];"translate_text" [label="translate_text", shape=ellipse, style=filled, fillcolor=lightgreen, width=0.5, height=0.3];"Weather Specialist" [label="Weather Specialist", shape=box, style=filled, style=rounded, fillcolor=lightyellow, width=1.5, height=0.8];"__start__" [label="__start__", shape=ellipse, style=filled, fillcolor=lightblue, width=0.5, height=0.3];"__end__" [label="__end__", shape=ellipse, style=filled, fillcolor=lightblue, width=0.5, height=0.3];"Weather Specialist" [label="Weather Specialist", shape=box, style=filled, fillcolor=lightyellow, width=1.5, height=0.8];"get_weather" [label="get_weather", shape=ellipse, style=filled, fillcolor=lightgreen, width=0.5, height=0.3];"__start__" -> "Triage Assistant";
+        "Triage Assistant" -> "get_weather" [style=dotted, penwidth=1.5];
+        "get_weather" -> "Triage Assistant" [style=dotted, penwidth=1.5];
+        "Triage Assistant" -> "translate_text" [style=dotted, penwidth=1.5];
+        "translate_text" -> "Triage Assistant" [style=dotted, penwidth=1.5];
+            "Triage Assistant" -> "Spanish Assistant";"Spanish Assistant" -> "__end__";
+            "Triage Assistant" -> "Technical Expert";
+        "Technical Expert" -> "translate_text" [style=dotted, penwidth=1.5];
+        "translate_text" -> "Technical Expert" [style=dotted, penwidth=1.5];"Technical Expert" -> "__end__";
+            "Triage Assistant" -> "Weather Specialist";
+        "Weather Specialist" -> "get_weather" [style=dotted, penwidth=1.5];
+        "get_weather" -> "Weather Specialist" [style=dotted, penwidth=1.5];"Weather Specialist" -> "__end__";}
