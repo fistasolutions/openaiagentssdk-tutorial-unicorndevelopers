@@ -4,6 +4,31 @@
 
 This tutorial demonstrates how to create and run an AI agent synchronously using the OpenAI Agents SDK. This is the most basic way to interact with an AI agent - you send a message and wait for a response.
 
+## 🔍 Key Concepts Explained
+
+### 🤖 What is an AI Agent?
+
+An AI agent is a software program that can:
+- Understand natural language input
+- Process information using AI models
+- Generate human-like responses
+- Perform tasks based on instructions
+
+### ⚡ Synchronous vs Asynchronous
+
+- **Synchronous**: The program waits for each operation to complete before moving to the next
+- **Asynchronous**: The program can handle multiple operations simultaneously
+
+In this example, we use `async/await` because the OpenAI Agents SDK is built on asynchronous programming, even though we're running it in a synchronous manner.
+
+### 🎯 The Runner.run() Method
+
+`Runner.run()` is a utility method that:
+- Takes an agent and a message as input
+- Sends the message to the agent
+- Waits for the agent to process and respond
+- Returns the result object containing the response
+
 ## 🎯 What You'll Learn
 
 - How to set up the OpenAI Agents SDK
@@ -131,7 +156,7 @@ This line starts the execution of our async function.
 
 3. **Run the script:**
    ```bash
-   python 1runsync.py
+   uv run 1runsync.py
    ```
 
 ## 📝 Expected Output
@@ -139,31 +164,6 @@ This line starts the execution of our async function.
 ```
 Islamabad is the capital of Pakistan.
 ```
-
-## 🔍 Key Concepts Explained
-
-### 🤖 What is an AI Agent?
-
-An AI agent is a software program that can:
-- Understand natural language input
-- Process information using AI models
-- Generate human-like responses
-- Perform tasks based on instructions
-
-### ⚡ Synchronous vs Asynchronous
-
-- **Synchronous**: The program waits for each operation to complete before moving to the next
-- **Asynchronous**: The program can handle multiple operations simultaneously
-
-In this example, we use `async/await` because the OpenAI Agents SDK is built on asynchronous programming, even though we're running it in a synchronous manner.
-
-### 🎯 The Runner.run() Method
-
-`Runner.run()` is a utility method that:
-- Takes an agent and a message as input
-- Sends the message to the agent
-- Waits for the agent to process and respond
-- Returns the result object containing the response
 
 ## 🛠️ Customization Ideas
 
