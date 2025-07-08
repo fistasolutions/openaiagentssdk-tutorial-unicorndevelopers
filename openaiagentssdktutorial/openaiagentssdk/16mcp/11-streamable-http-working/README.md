@@ -44,7 +44,7 @@ Before running this example, make sure you have:
 2. **OpenAI API Key** set up
 3. **Required packages** installed:
    ```bash
-   pip install openai-agents python-dotenv mcp requests
+   uv add openai-agents python-dotenv mcp requests
    ```
 
 ## 🔧 Setup Instructions
@@ -61,13 +61,13 @@ OPENAI_MODEL=gpt-4o
 ### 2. Install Dependencies
 
 ```bash
-pip install openai-agents python-dotenv mcp requests
+uv add openai-agents python-dotenv mcp requests
 ```
 
 ### 3. Run the Complete Example
 
 ```bash
-python 11streamablehttpsmain.py
+uv run 11streamablehttpsmain.py
 ```
 
 This will:

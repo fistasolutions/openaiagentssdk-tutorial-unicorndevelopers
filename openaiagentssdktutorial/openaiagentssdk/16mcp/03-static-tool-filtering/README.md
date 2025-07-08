@@ -42,7 +42,7 @@ Before running this example, make sure you have:
 3. **Node.js/npm** installed (for MCP servers)
 4. **Required packages** installed:
    ```bash
-   pip install openai-agents python-dotenv
+   uv add openai-agents python-dotenv
    ```
 
 ## 🔧 Setup Instructions
@@ -59,13 +59,13 @@ OPENAI_MODEL=gpt-4o
 ### 2. Install Dependencies
 
 ```bash
-pip install openai-agents python-dotenv
+uv add openai-agents python-dotenv
 ```
 
 ### 3. Run the Example
 
 ```bash
-python 5statictoolfiltering.py
+uv run 5statictoolfiltering.py
 ```
 
 ## 📝 Code Walkthrough

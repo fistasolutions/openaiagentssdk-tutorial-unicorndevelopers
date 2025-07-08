@@ -1,15 +1,25 @@
 # 🚀 Basic MCP Example - Getting Started with Model Context Protocol
 
+## 📖 What is This Example? (Simple Explanation)
+
+This is your **first step** into the world of MCP! Think of this as learning to ride a bicycle - we start with the basics before going on adventures.
+
+### 🎯 Simple Explanation
+This example shows you how to make your AI assistant talk to your computer's file system (the place where all your files and folders are stored). It's like teaching your AI to read files from your computer, just like you can open and read documents.
+
+### 🏠 Real-World Analogy
+Imagine you have a smart assistant who can help you organize your house, but they can't see what's inside your rooms. MCP is like giving them a special key that lets them look inside your rooms (folders) and tell you what's there (files).
+
 ## 📖 Overview
 
 This is your first step into the world of **Model Context Protocol (MCP)** with OpenAI Agents SDK! This example demonstrates how to connect to an MCP server and use it to read files and answer questions.
 
-## 🎯 What You'll Learn
+## 🎯 What You'll Learn (In Simple Terms)
 
-- ✅ How to set up an MCP server connection
-- ✅ How to create an agent that can use MCP tools
-- ✅ How to read files and answer questions about their content
-- ✅ Basic MCP server-client communication
+- ✅ How to set up an MCP server connection (like connecting your phone to WiFi)
+- ✅ How to create an agent that can use MCP tools (like teaching your assistant new skills)
+- ✅ How to read files and answer questions about their content (like having your assistant read books and tell you what they say)
+- ✅ Basic MCP server-client communication (like learning how your assistant talks to your computer)
 
 ## 🏗️ Architecture Overview
 
@@ -40,7 +50,7 @@ Before running this example, make sure you have:
 2. **OpenAI API Key** set up
 3. **Required packages** installed:
    ```bash
-   pip install openai-agents python-dotenv
+   uv add openai-agents python-dotenv
    ```
 
 ## 🔧 Setup Instructions
@@ -57,13 +67,13 @@ OPENAI_MODEL=gpt-4o
 ### 2. Install Dependencies
 
 ```bash
-pip install openai-agents python-dotenv
+uv add openai-agents python-dotenv
 ```
 
 ### 3. Run the Example
 
 ```bash
-python mcpbasic.py
+uv run mcpbasic.py
 ```
 
 ## 📝 Code Walkthrough
@@ -72,7 +82,7 @@ python mcpbasic.py
 
 Let's break down the code step by step:
 
-#### 1. Imports and Setup
+#### 1. Imports and Setup (Like Gathering Your Tools)
 
 ```python
 import os
@@ -83,12 +93,12 @@ from agents import Agent, Runner, set_default_openai_key
 from agents.mcp import MCPServerStdio
 ```
 
-**What this does:**
-- `load_dotenv()`: Loads environment variables from `.env` file
-- `set_default_openai_key()`: Sets up your OpenAI API key
-- `MCPServerStdio`: Connects to MCP servers via standard input/output
+**What this does (in simple terms):**
+- `load_dotenv()`: Loads your secret keys from a file (like opening a safe)
+- `set_default_openai_key()`: Sets up your OpenAI API key (like giving your assistant your phone number)
+- `MCPServerStdio`: Connects to MCP servers (like the cable that connects your TV to the cable box)
 
-#### 2. MCP Server Connection
+#### 2. MCP Server Connection (Like Connecting to WiFi)
 
 ```python
 async with MCPServerStdio(
@@ -99,13 +109,13 @@ async with MCPServerStdio(
 ) as mcp_server:
 ```
 
-**What this does:**
-- Creates a connection to a filesystem MCP server
-- Uses `npx` to run the official filesystem server
-- Points to your `sample_files` directory
-- Automatically manages the server lifecycle
+**What this does (in simple terms):**
+- Creates a connection to a filesystem MCP server (like connecting your phone to WiFi)
+- Uses `npx` to run the official filesystem server (like downloading and installing an app)
+- Points to your `sample_files` directory (like telling your assistant which room to look in)
+- Automatically manages the server lifecycle (like having someone turn the lights on and off for you)
 
-#### 3. Agent Creation
+#### 3. Agent Creation (Like Hiring an Assistant)
 
 ```python
 agent = Agent(
@@ -120,12 +130,12 @@ agent = Agent(
 )
 ```
 
-**What this does:**
-- Creates an AI agent with a specific personality
-- Gives it instructions on how to behave
-- Connects it to the MCP server (which provides file-reading tools)
+**What this does (in simple terms):**
+- Creates an AI agent with a specific personality (like hiring someone with a specific job)
+- Gives it instructions on how to behave (like giving your new employee a job description)
+- Connects it to the MCP server (which provides file-reading tools) (like giving your employee the keys to the office)
 
-#### 4. Running Queries
+#### 4. Running Queries (Like Asking Your Assistant Questions)
 
 ```python
 comprehensive_query = """
@@ -141,23 +151,23 @@ Please provide clear, detailed answers for each part.
 result = await Runner.run(starting_agent=agent, input=comprehensive_query)
 ```
 
-**What this does:**
-- Sends a complex query to the agent
-- The agent uses MCP tools to read files
-- Returns a comprehensive response based on file content
+**What this does (in simple terms):**
+- Sends a complex query to the agent (like asking your assistant to do multiple tasks)
+- The agent uses MCP tools to read files (like your assistant opening books to find information)
+- Returns a comprehensive response based on file content (like your assistant giving you a detailed report)
 
-## 🔍 How It Works
+## 🔍 How It Works (Simple Steps)
 
-### Step-by-Step Process
+### Step-by-Step Process (Like Making a Phone Call)
 
-1. **Server Startup**: The script starts an MCP filesystem server
-2. **Connection**: Your agent connects to the server
-3. **Tool Discovery**: The agent discovers available file-reading tools
+1. **Server Startup**: The script starts an MCP filesystem server (like turning on your phone)
+2. **Connection**: Your agent connects to the server (like dialing a number)
+3. **Tool Discovery**: The agent discovers available file-reading tools (like finding out what apps are available)
 4. **Query Processing**: When you ask a question, the agent:
-   - Determines which files to read
-   - Uses MCP tools to read the files
-   - Analyzes the content
-   - Provides a comprehensive answer
+   - Determines which files to read (like deciding which app to use)
+   - Uses MCP tools to read the files (like opening an app)
+   - Analyzes the content (like reading the information)
+   - Provides a comprehensive answer (like telling you what they found)
 
 ### MCP Communication Flow
 

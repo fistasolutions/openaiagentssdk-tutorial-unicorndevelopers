@@ -46,7 +46,7 @@ Before running this example, make sure you have:
 4. **Node.js/npm** installed (for MCP servers)
 5. **Required packages** installed:
    ```bash
-   pip install openai-agents python-dotenv
+   uv add openai-agents python-dotenv
    ```
 
 ## 🔧 Setup Instructions
@@ -63,13 +63,13 @@ OPENAI_MODEL=gpt-4o
 ### 2. Install Dependencies
 
 ```bash
-pip install openai-agents python-dotenv
+uv add openai-agents python-dotenv
 ```
 
 ### 3. Run the Example
 
 ```bash
-python 4mcpservers.py
+uv run 4mcpservers.py
 ```
 
 ## 📝 Code Walkthrough
