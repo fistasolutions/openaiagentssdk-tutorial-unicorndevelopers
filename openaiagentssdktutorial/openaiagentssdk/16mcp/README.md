@@ -1,83 +1,184 @@
-# MCP Basic Demo
+# 🚀 MCP (Model Context Protocol) Examples Collection
 
-This is a basic demonstration of the Model Context Protocol (MCP) using the OpenAI Agents SDK.
+## 📖 Overview
 
-## What it does
+Welcome to the comprehensive **Model Context Protocol (MCP)** examples collection! This directory contains a series of progressively advanced examples that teach you how to use MCP with the OpenAI Agents SDK.
 
-The demo shows how an AI agent can:
-1. Connect to an MCP filesystem server
-2. Read files from a controlled directory
-3. Process and summarize file contents
-4. Provide helpful responses based on the files
+## 🎯 What is MCP?
 
-## Setup
+**Model Context Protocol (MCP)** is a standardized way for AI models to interact with external data sources, tools, and services. Think of it as a "bridge" between your AI agent and the real world.
 
-### 1. Install Dependencies
+### Why MCP?
 
-The project uses `uv` for dependency management. Make sure you have the required packages:
+- **🔧 Tool Integration**: Connect to databases, APIs, file systems
+- **📊 Data Access**: Read real-time data from various sources  
+- **🛡️ Security**: Secure, controlled access to external resources
+- **🔄 Standardization**: Consistent interface across different tools
+
+## 📚 Examples Overview
+
+| # | Example | Description | Difficulty |
+|---|---------|-------------|------------|
+| 01 | [Basic MCP Example](./01-basic-mcp-example/) | Connect to filesystem MCP server | 🌱 Beginner |
+| 02 | [Multiple MCP Servers](./02-multiple-mcp-servers/) | Connect to multiple servers simultaneously | 🌿 Intermediate |
+| 03 | [Static Tool Filtering](./03-static-tool-filtering/) | Control which tools your agent can access | 🌿 Intermediate |
+| 04 | [Dynamic Tool Filtering](./04-dynamic-tool-filtering/) | Filter tools based on context and conditions | 🌳 Advanced |
+| 05 | [File Search Example](./05-file-search-example/) | Advanced file searching and analysis | 🌿 Intermediate |
+| 06 | [Git Example](./06-git-example/) | Git repository analysis and management | 🌿 Intermediate |
+| 07 | [Prompts Example](./07-prompts-example/) | Working with MCP prompt servers | 🌿 Intermediate |
+| 08 | [Prompt Server](./08-prompt-server/) | Creating custom prompt servers | 🌳 Advanced |
+| 09 | [SSE Example](./09-sse-example/) | Server-Sent Events MCP servers | 🌳 Advanced |
+| 10 | [Streamable HTTP Example](./10-streamable-http-example/) | HTTP-based streaming MCP servers | 🌳 Advanced |
+| 11 | [Working Streamable HTTP](./11-streamable-http-working/) | Complete server-client setup | 🌿 Intermediate |
+
+## 🏗️ Architecture Overview
+
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│                 │    │   MCP Servers    │    │   Data Sources  │
+│                 │    │                  │    │                 │
+│   Your Agent    │◄──►│   - Filesystem   │◄──►│   - Files       │
+│   (Client)      │    │   - Git          │    │   - Repositories│
+│                 │    │   - Database     │    │   - APIs        │
+│                 │    │   - Custom       │    │   - Services    │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+```
+
+## 🛠️ Prerequisites
+
+Before running any examples, make sure you have:
+
+1. **Python 3.8+** installed
+2. **OpenAI API Key** set up
+3. **Node.js/npm** installed (for some MCP servers)
+4. **Git** installed (for Git examples)
+5. **Required packages** installed:
+   ```bash
+   pip install openai-agents python-dotenv mcp requests
+   ```
+
+## 🔧 Quick Start
+
+### 1. Environment Setup
+
+Create a `.env` file in this directory:
 
 ```bash
-cd openaiagentssdktutorial
-uv sync
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=gpt-4o
 ```
 
-### 2. Set up Environment Variables
-
-Create a `.env` file in the `openaiagentssdktutorial` directory with your OpenAI API key:
+### 2. Start with Basic Example
 
 ```bash
-# OpenAI Configuration
-OPENAI_API_KEY=sk-your-actual-openai-api-key-here
-OPENAI_MODEL=gpt-3.5-turbo
+cd 01-basic-mcp-example
+python mcpbasic.py
 ```
 
-**Important:** Replace `sk-your-actual-openai-api-key-here` with your real OpenAI API key from https://platform.openai.com/account/api-keys
+### 3. Explore Other Examples
 
-### 3. Sample Files
+Each example directory contains:
+- `README.md` - Detailed explanation and walkthrough
+- Python scripts - Working code examples
+- Sample files (where applicable)
 
-The demo includes a `sample_files` directory with a `demo.txt` file. You can add more `.txt` files to this directory for the agent to read.
+## 📖 Learning Path
 
-## Running the Demo
+### 🌱 Beginner Level
+Start here if you're new to MCP:
 
-From the `openaiagentssdktutorial` directory:
+1. **[01-basic-mcp-example](./01-basic-mcp-example/)** - Learn the fundamentals
+2. **[02-multiple-mcp-servers](./02-multiple-mcp-servers/)** - Connect to multiple sources
+3. **[03-static-tool-filtering](./03-static-tool-filtering/)** - Control tool access
 
+### 🌿 Intermediate Level
+Build on your foundation:
+
+4. **[05-file-search-example](./05-file-search-example/)** - Advanced file operations
+5. **[06-git-example](./06-git-example/)** - Git repository integration
+6. **[07-prompts-example](./07-prompts-example/)** - Working with prompts
+7. **[11-streamable-http-working](./11-streamable-http-working/)** - Complete server setup
+
+### 🌳 Advanced Level
+Master advanced concepts:
+
+8. **[04-dynamic-tool-filtering](./04-dynamic-tool-filtering/)** - Context-aware filtering
+9. **[08-prompt-server](./08-prompt-server/)** - Custom prompt servers
+10. **[09-sse-example](./09-sse-example/)** - Real-time streaming
+11. **[10-streamable-http-example](./10-streamable-http-example/)** - HTTP streaming
+
+## 🔍 Key Concepts
+
+### MCP Components
+
+| Component | Role | Example |
+|-----------|------|---------|
+| **Agent** | AI brain that makes decisions | "I need to read a file to answer this question" |
+| **MCP Server** | Tool provider that executes actions | "Here's the content of the file you requested" |
+| **Tools** | Functions that perform specific tasks | `read_file()`, `get_weather()`, `analyze_git()` |
+| **Transport** | Communication protocol | HTTP, SSE, stdio |
+
+### Tool Filtering Strategies
+
+| Strategy | When to Use | Example |
+|----------|-------------|---------|
+| **Static** | Security, performance | Only allow read operations |
+| **Dynamic** | Context-aware access | Allow write only in specific directories |
+| **Role-based** | User permissions | Different tools for different users |
+
+## 🚨 Common Issues & Solutions
+
+### 1. "OpenAI API key not found"
 ```bash
-cd openaiagentssdk/16mcp
-uv run python mcpbasic.py
+# Create .env file
+echo "OPENAI_API_KEY=your_key_here" > .env
 ```
 
-## Expected Output
-
-When you run the script with a valid API key, you should see:
-
-```
-Secure MCP Filesystem Server running on stdio
-Allowed directories: [...]
-Running: Please read the content of 'demo.txt' and summarize it.
-
-🧠 Final Output:
-[AI agent's summary of the demo.txt file content]
+### 2. "uv is not installed"
+```bash
+# Install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-## How it Works
+### 3. "MCP server connection failed"
+- Check if required dependencies are installed
+- Verify server is running on correct port
+- Ensure firewall allows connections
 
-1. **MCP Server**: The script starts an MCP filesystem server using `npx @modelcontextprotocol/server-filesystem`
-2. **Agent Creation**: Creates an AI agent with access to the MCP server's tools
-3. **File Reading**: The agent uses MCP tools to read files from the `sample_files` directory
-4. **Processing**: The agent processes the file content and provides a summary
+### 4. "Tool not found"
+- Check tool names match exactly
+- Verify MCP server provides the expected tools
+- Review server documentation
 
-## Troubleshooting
+## 📊 Example Outputs
 
-- **"Incorrect API key" error**: Make sure you've set a valid OpenAI API key in your `.env` file
-- **"npx not found" error**: Install Node.js and npm, which includes npx
-- **Permission errors**: The MCP server only has access to the `sample_files` directory for security
+Each example includes:
+- ✅ Expected output samples
+- ✅ Step-by-step walkthroughs
+- ✅ Troubleshooting guides
+- ✅ Code explanations
 
-## Files Structure
+## 🔗 Additional Resources
 
-```
-16mcp/
-├── mcpbasic.py          # Main demo script
-├── sample_files/        # Directory with files for the agent to read
-│   └── demo.txt         # Sample file with MCP information
-└── README.md           # This file
-``` 
+- [OpenAI Agents SDK Documentation](https://platform.openai.com/docs/agents)
+- [Model Context Protocol Specification](https://modelcontextprotocol.io/)
+- [MCP Server Registry](https://github.com/modelcontextprotocol/servers)
+- [FastMCP Documentation](https://modelcontextprotocol.io/docs/servers/fastmcp)
+
+## 🤝 Contributing
+
+Found an issue or have a suggestion? Feel free to:
+- Report bugs
+- Suggest improvements
+- Add more examples
+- Improve documentation
+
+## 📝 License
+
+This collection is part of the OpenAI Agents SDK tutorial series.
+
+---
+
+**🎉 Ready to start?** Choose an example from the table above and begin your MCP journey!
+
+**💡 Pro Tip**: Start with the basic example and work your way up. Each example builds on the concepts from the previous ones. 

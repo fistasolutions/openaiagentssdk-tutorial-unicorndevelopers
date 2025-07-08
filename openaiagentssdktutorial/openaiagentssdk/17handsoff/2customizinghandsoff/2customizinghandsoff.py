@@ -1,46 +1,39 @@
-from dotenv import load_dotenv
-import os
-from agents import Agent, Runner, handoff, set_default_openai_key, RunContextWrapper
+from agents import Agent, Runner, handoff, RunContextWrapper
+import asyncio
 
-# 🔐 Load env variables
-load_dotenv()
-set_default_openai_key(os.environ.get("OPENAI_API_KEY"))
-openai_model = os.environ.get("OPENAI_MODEL")
+# ✅ Define a custom action to perform during handoff
+def on_handoff(ctx: RunContextWrapper[None]):
+    print("🔄 Handoff triggered! Logging event...")
 
-# 🎯 Specialized agent to handoff to
-refund_agent = Agent(
-    name="RefundAgent",
-    instructions="You handle all refund-related queries.",
-    model=openai_model
+# 🎯 Target agent for the handoff
+specialist_agent = Agent(
+    name="Specialist agent",
+    instructions="You handle specialized tasks."
 )
 
-# ✅ Callback on handoff trigger
-def on_handoff_trigger(ctx: RunContextWrapper[None]):
-    print("📤 Handoff triggered to RefundAgent!")
-
-# 🔧 Create customized handoff object
-refund_handoff = handoff(
-    agent=refund_agent,
-    on_handoff=on_handoff_trigger,
-    tool_name_override="custom_refund_tool",
-    tool_description_override="Handles refund issues for the user."
+# 🔧 Customized handoff configuration
+custom_handoff = handoff(
+    agent=specialist_agent,
+    on_handoff=on_handoff,
+    tool_name_override="custom_handoff_tool",
+    tool_description_override="Custom tool to transfer to a specialist agent."
 )
 
-# 🧠 Central agent (triage)
-triage_agent = Agent(
-    name="TriageAgent",
-    instructions="""
-        You determine if the user's query is about refunds, and if so, call the appropriate handoff tool.
-    """,
-    model=openai_model,
-    handoffs=[refund_handoff]
+# 🤖 Orchestrator agent that uses the customized handoff
+main_agent = Agent(
+    name="Main agent",
+    instructions="Delegate complex tasks using custom handoffs.",
+    handoffs=[custom_handoff]
 )
 
-# 🚀 Trigger a refund-related query
-result = Runner.run_sync(
-    triage_agent,
-    "I was overcharged and want to request a refund."
-)
+# 🚀 Run it
+async def main():
+    result = await Runner.run(
+        main_agent,
+        input="This seems like a complex task. Can you handle it?"
+    )
+    print("🧠 Final Output:")
+    print(result.final_output)
 
-# 📦 Output result
-print("🤖 Final Output:\n", result.final_output)
+if __name__ == "__main__":
+    asyncio.run(main())

@@ -1,0 +1,16 @@
+Welcome to the MCP Demo!
+
+This is a sample text file that demonstrates how the Model Context Protocol (MCP) can be used to read files from the filesystem.
+
+Key Features of MCP:
+- File system access
+- Tool discovery
+- Standardized communication between AI agents and external services
+
+This demo shows how an AI agent can:
+1. Discover available tools from an MCP server
+2. Read files from the filesystem
+3. Process and summarize the content
+4. Provide helpful responses based on the file contents
+
+The MCP server provides a filesystem interface that allows the AI agent to browse directories, read files, and interact with the file system in a controlled and secure manner. 

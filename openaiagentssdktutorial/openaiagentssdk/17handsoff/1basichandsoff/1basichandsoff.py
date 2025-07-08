@@ -1,43 +1,31 @@
-from dotenv import load_dotenv
-import os
-from agents import Agent, Runner, handoff, set_default_openai_key
-
-# 🔐 Load environment variables
-load_dotenv()
-set_default_openai_key(os.environ.get("OPENAI_API_KEY"))
-openai_model = os.environ.get("OPENAI_MODEL")
+from agents import Agent, Runner, handoff
+import asyncio
 
 # 🧾 Specialized agents
-billing_agent = Agent(
-    name="Billing agent",
-    instructions="You are an expert in handling billing-related queries.",
-    model=openai_model
-)
+billing_agent = Agent(name="Billing agent", instructions="You handle billing queries.")
+refund_agent = Agent(name="Refund agent", instructions="You handle refund-related issues.")
 
-refund_agent = Agent(
-    name="Refund agent",
-    instructions="You are an expert in refund processing.",
-    model=openai_model
-)
-
-# 🧠 Triage agent that delegates
+# 🤝 Triage agent with handoffs to billing and refund agents
 triage_agent = Agent(
     name="Triage agent",
-    instructions="""
-    You're a smart assistant that decides whether a user's query is about billing or refunds, 
-    and then delegates to the correct agent.
-    """,
-    model=openai_model,
+    instructions="You route the user's query to the correct department.",
     handoffs=[
-        billing_agent,  # Direct handoff
-        handoff(refund_agent)  # Explicit handoff with customization options if needed
+        billing_agent,  # Direct agent handoff (tool name will be auto-generated)
+        handoff(refund_agent)  # Customizable handoff with default behavior
     ]
 )
 
-# 🚀 Run
-result = Runner.run_sync(
-    triage_agent,
-    "I was charged twice for my subscription and I need my money back."
-)
+# 🚀 Test the handoff
+async def main():
+    print("🧪 Running Handoff Demo...\n")
 
-print("🤖 Final Output:\n", result.final_output)
+    result = await Runner.run(
+        triage_agent,
+        input="I would like a refund for my last purchase."
+    )
+
+    print("🧠 Final Output:")
+    print(result.final_output)
+
+if __name__ == "__main__":
+    asyncio.run(main())
