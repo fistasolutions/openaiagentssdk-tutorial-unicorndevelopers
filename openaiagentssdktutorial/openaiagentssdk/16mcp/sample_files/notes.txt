@@ -1,0 +1,25 @@
+Project Notes - MCP Integration
+
+TODO List:
+- [x] Set up MCP filesystem server
+- [x] Create basic demo script
+- [x] Add sample files
+- [ ] Test with different file types
+- [ ] Add error handling
+- [ ] Create documentation
+
+Key Learnings:
+1. MCP provides standardized way for AI agents to interact with external services
+2. Filesystem server allows controlled access to specific directories
+3. Tools are automatically discovered and made available to the agent
+4. Security is built-in with directory restrictions
+
+Next Steps:
+- Explore other MCP servers (Git, HTTP, etc.)
+- Build more complex workflows
+- Integrate with other AI frameworks
+
+Resources:
+- MCP Documentation: https://modelcontextprotocol.io/
+- OpenAI Agents SDK: https://github.com/openai/openai-agents
+- Filesystem Server: https://github.com/modelcontextprotocol/server-filesystem 

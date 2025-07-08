@@ -1,31 +1,59 @@
-from agents import Agent, Runner, RunContextWrapper, function_tool, set_default_openai_key
-from dotenv import load_dotenv
 import os
+import asyncio
+from dotenv import load_dotenv
+from typing import Any
+from agents import (
+    Agent,
+    Runner,
+    RunContextWrapper,
+    function_tool,
+    set_default_openai_key,
+)
 
+# Load .env for OpenAI credentials
 load_dotenv()
-set_default_openai_key(os.environ.get("OPENAI_API_KEY"))
+openai_api_key = os.environ.get("OPENAI_API_KEY")
 openai_model = os.environ.get("OPENAI_MODEL")
+set_default_openai_key(openai_api_key)
 
 
-# ❌ Intentionally crashing tool
-@function_tool(
-    failure_error_function=lambda ctx, e: f"❗ Custom Error Handler: Something went wrong! Error: {str(e)}"
-)
-def crashing_tool(ctx: RunContextWrapper[None]) -> str:
-    """This tool crashes on purpose to demonstrate error handling."""
-    raise ValueError("This is a simulated tool crash.")
+# ✅ Correct error handler (takes two arguments)
+def custom_error_handler(ctx: RunContextWrapper[Any], err: Exception) -> str:
+    return f"Oops! Something went wrong in the tool: {str(err)}"
 
 
-# 🧠 Agent setup
+# A function tool that may raise a division error
+@function_tool(failure_error_function=custom_error_handler)
+def risky_division(ctx: RunContextWrapper[Any], numerator: int, denominator: int) -> str:
+    """
+    Performs a division and returns the result.
+
+    Args:
+        numerator: The number to divide.
+        denominator: The number to divide by.
+    """
+    result = numerator / denominator
+    return f"Result: {result}"
+
+
+# Main agent
 agent = Agent(
-    name="Resilient Assistant",
-    instructions="Use tools, and if they fail, show custom error message.",
-    tools=[crashing_tool],
-    model=openai_model
+    name="Math Helper",
+    model=openai_model,
+    instructions="You are a helpful calculator. Use the risky_division tool to divide numbers.",
+    tools=[risky_division],
 )
 
 
-# 🚀 Run it
+async def main():
+    print("=== Tool Error Handling Demo ===\n")
+    result = await Runner.run(
+        agent,
+        input="Divide 10 by 0 using risky_division."
+    )
+    print("=== Final Output ===")
+    print(result.final_output)
+
+
 if __name__ == "__main__":
-    result = Runner.run_sync(agent, "Call the crashing tool")
-    print("🧠 Final Output:\n", result.final_output)
+    asyncio.run(main())

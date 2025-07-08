@@ -1,58 +1,83 @@
-from agents import Agent, Runner, set_default_openai_key, function_tool, RunConfig
-from dotenv import load_dotenv
+"""
+Title: Customizing Tool Agents using OpenAI Agents SDK
+
+Description:
+This example shows how to wrap an Agent as a custom function tool, where you invoke it using
+Runner.run() with advanced configurations like max_turns and run_config.
+"""
+
 import os
 import asyncio
+from dotenv import load_dotenv
+from typing import Any
 
-# === Load Environment Variables ===
+from agents import (
+    Agent,
+    Runner,
+    RunConfig,
+    ModelSettings,
+    function_tool,
+    RunContextWrapper,
+    set_default_openai_key
+)
+
+# Step 1: Load API key and default model
 load_dotenv()
 openai_api_key = os.environ.get("OPENAI_API_KEY")
-set_default_openai_key(openai_api_key)
 openai_model = os.environ.get("OPENAI_MODEL")
+set_default_openai_key(openai_api_key)
 
-# === Define a Function Tool that Internally Runs a Custom Agent ===
+
+# Step 2: Define a function tool that internally runs an agent
 @function_tool
 async def run_my_agent() -> str:
-    """A tool that runs the agent with custom configs"""
-
-    # Define internal agent
+    """A tool that runs a specialized agent with advanced settings."""
+    
     agent = Agent(
-        name="My agent",
-        instructions="You are a motivational coach. Give a powerful 2-line quote.",
+        name="My Custom Agent",
+        instructions="You are a creative assistant. Give detailed, poetic answers.",
         model=openai_model
     )
 
-    # RunConfig to customize the run
+    # Custom run configuration (e.g., temperature, trace metadata, etc.)
     run_config = RunConfig(
         model=openai_model,
-        model_settings={"temperature": 0.9},  # More creative outputs
-        workflow_name="custom_agent_tool_run"
+        model_settings=ModelSettings(temperature=0.9),
+        max_turns=3,
+        workflow_name="custom_tool_agent_workflow",
+        trace_metadata={"use_case": "custom_tool_agent"}
     )
 
-    # Run the agent with custom settings
+    # Execute the agent with advanced config
     result = await Runner.run(
         agent,
-        input="I feel unmotivated, inspire me.",
-        max_turns=3,
+        input="Tell me a poetic description of the moon.",
         run_config=run_config
     )
 
     return str(result.final_output)
 
-# === Use This Tool in Another Agent ===
+
+# Step 3: Create a main agent that uses the above as a tool
 main_agent = Agent(
-    name="Orchestrator",
-    instructions="Use the available tools to inspire the user.",
-    tools=[run_my_agent],
-    model=openai_model
+    name="Tool-Orchestrator Agent",
+    instructions="You use the tool to describe nature poetically.",
+    model=openai_model,
+    tools=[run_my_agent]
 )
 
-# === Main Async Execution ===
+
+# Step 4: Async runner
 async def main():
+    print("=== Running Custom Tool Agent ===\n")
     result = await Runner.run(
         main_agent,
-        input="I need some inspiration, please help."
+        input="Can you describe the moon for me?"
     )
-    print("🔹 Final Output:\n", result.final_output)
+    print("=== Final Output ===")
+    print(result.final_output)
 
+
+# Step 5: Execute
 if __name__ == "__main__":
     asyncio.run(main())

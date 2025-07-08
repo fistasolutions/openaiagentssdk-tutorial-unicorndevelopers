@@ -1,15 +1,32 @@
-from agents import Agent, Runner, set_default_openai_key
-from dotenv import load_dotenv
+"""
+Title: Using Agents as Tools with OpenAI Agents SDK
+
+Description:
+This example demonstrates how to use specialized agents (e.g., for translating to Spanish and French)
+as tools that are callable by a central orchestrator agent. This structure allows modular design
+where the main agent delegates work without handing off conversation control.
+
+Requirements:
+- Basic Python knowledge (async functions, classes)
+- OpenAI Agents SDK installed (`pip install openai-agents`)
+- `.env` file with:
+    OPENAI_API_KEY=your-api-key
+    OPENAI_MODEL=gpt-4o or gpt-3.5-turbo
+"""
+
 import os
 import asyncio
+from dotenv import load_dotenv
 
-# === Load API Key and Model ===
+from agents import Agent, Runner, set_default_openai_key
+
+# Step 1: Load API Key and Model from environment
 load_dotenv()
 openai_api_key = os.environ.get("OPENAI_API_KEY")
-set_default_openai_key(openai_api_key)
 openai_model = os.environ.get("OPENAI_MODEL")
+set_default_openai_key(openai_api_key)
 
-# === Specialized Translation Agents ===
+# Step 2: Create specialized agents for translation
 spanish_agent = Agent(
     name="Spanish agent",
     instructions="You translate the user's message to Spanish.",
@@ -22,34 +39,37 @@ french_agent = Agent(
     model=openai_model
 )
 
-# === Orchestrator Agent That Uses Other Agents as Tools ===
+# Step 3: Create the orchestrator agent and register translation agents as tools
 orchestrator_agent = Agent(
-    name="Orchestrator Agent",
+    name="orchestrator_agent",
     instructions=(
-        "You are a translation assistant. "
-        "Use the tools to translate the user's message into the requested language."
+        "You are a translation assistant. Use tools to translate user input into Spanish or French. "
+        "If asked for multiple translations, call the corresponding tools."
     ),
+    model=openai_model,
     tools=[
         spanish_agent.as_tool(
             tool_name="translate_to_spanish",
-            tool_description="Translate user input into Spanish."
+            tool_description="Translate the user's message to Spanish",
         ),
         french_agent.as_tool(
             tool_name="translate_to_french",
-            tool_description="Translate user input into French."
-        )
-    ],
-    model=openai_model
+            tool_description="Translate the user's message to French",
+        ),
+    ]
 )
 
-# === Main Async Runner ===
+# Step 4: Main async function to run the orchestrator agent
 async def main():
+    print("=== Running Translation Orchestrator Agent ===\n")
     result = await Runner.run(
         orchestrator_agent,
-        input="Translate 'Good morning, my friend!' to Spanish and French."
+        input="Say 'Hello, how are you?' in Spanish and French."
     )
-    print("🔹 Final Output:\n", result.final_output)
+    print("=== Final Output ===")
+    print(result.final_output)
 
-# === Run Async Function ===
+
+# Step 5: Run the script
 if __name__ == "__main__":
     asyncio.run(main())

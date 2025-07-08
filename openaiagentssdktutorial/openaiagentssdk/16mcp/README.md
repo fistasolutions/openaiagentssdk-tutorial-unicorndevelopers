@@ -1,127 +1,83 @@
-# 🔌 Model Context Protocol (MCP) with AI Agents
+# MCP Basic Demo
 
-## What This Code Does (Big Picture)
-This example demonstrates how to use the Model Context Protocol (MCP) to give your AI assistant access to external tools - specifically, a filesystem. The AI can read files, list directories, and interact with the file system just like a helpful assistant with access to your computer!
+This is a basic demonstration of the Model Context Protocol (MCP) using the OpenAI Agents SDK.
 
-## What is MCP? 🤔
-MCP (Model Context Protocol) is like a universal connector for AI models - similar to how USB-C connects your devices to various peripherals. It provides a standardized way for AI models to access different data sources and tools.
+## What it does
 
-Think of it as giving your AI assistant "superpowers" to interact with the world beyond just text conversations!
+The demo shows how an AI agent can:
+1. Connect to an MCP filesystem server
+2. Read files from a controlled directory
+3. Process and summarize file contents
+4. Provide helpful responses based on the files
 
-## Step 1: Setting Up the Environment 🗝️
-```python
-from agents import Agent, Runner
-from agents.mcp import MCPServerStdio
-from dotenv import load_dotenv
-import os
-import tempfile
+## Setup
 
-load_dotenv()
-openai_api_key = os.environ.get("OPENAI_API_KEY")
-from agents import set_default_openai_key
-set_default_openai_key(openai_api_key)
+### 1. Install Dependencies
+
+The project uses `uv` for dependency management. Make sure you have the required packages:
+
+```bash
+cd openaiagentssdktutorial
+uv sync
 ```
-This code:
-- Imports the necessary libraries
-- Loads your OpenAI API key from the environment
-- Sets up the default key for our agents
 
-## Step 2: Creating a Temporary Filesystem 📁
-```python
-with tempfile.TemporaryDirectory() as temp_dir:
-    # Create a sample file in the temporary directory
-    with open(os.path.join(temp_dir, "sample.txt"), "w") as f:
-        f.write("This is a sample file created for MCP demonstration.\n")
-        f.write("The Model Context Protocol allows LLMs to interact with tools like filesystems.\n")
+### 2. Set up Environment Variables
+
+Create a `.env` file in the `openaiagentssdktutorial` directory with your OpenAI API key:
+
+```bash
+# OpenAI Configuration
+OPENAI_API_KEY=sk-your-actual-openai-api-key-here
+OPENAI_MODEL=gpt-3.5-turbo
 ```
-This creates:
-- A temporary directory that will be automatically cleaned up when done
-- A sample text file for our AI to read
 
-## Step 3: Setting Up the MCP Server 🖥️
-```python
-async with MCPServerStdio(
-    params={
-        "command": "npx",
-        "args": ["-y", "@modelcontextprotocol/server-filesystem", temp_dir],
-    },
-    cache_tools_list=True  # Cache the tools list for better performance
-) as server:
-    # Rest of the code...
+**Important:** Replace `sk-your-actual-openai-api-key-here` with your real OpenAI API key from https://platform.openai.com/account/api-keys
+
+### 3. Sample Files
+
+The demo includes a `sample_files` directory with a `demo.txt` file. You can add more `.txt` files to this directory for the agent to read.
+
+## Running the Demo
+
+From the `openaiagentssdktutorial` directory:
+
+```bash
+cd openaiagentssdk/16mcp
+uv run python mcpbasic.py
 ```
-This code:
-- Creates an MCP server that provides filesystem access
-- Points it to our temporary directory
-- Enables caching for better performance
 
-## Step 4: Creating an AI Assistant with MCP Tools 🤖
-```python
-agent = Agent(
-    name="FileAssistant",
-    instructions="You are a helpful assistant with access to a filesystem. Use the provided tools to read files and help the user understand their contents.",
-    model="gpt-4o",
-    mcp_servers=[server]
-)
+## Expected Output
+
+When you run the script with a valid API key, you should see:
+
 ```
-This creates an AI assistant that:
-- Has a name: "FileAssistant"
-- Knows it can access files
-- Uses OpenAI's GPT-4o model
-- Has access to our MCP filesystem server
+Secure MCP Filesystem Server running on stdio
+Allowed directories: [...]
+Running: Please read the content of 'demo.txt' and summarize it.
 
-## Step 5: Running the AI Assistant with File Tasks 🚀
-```python
-result = await Runner.run(
-    agent, 
-    "Please read the sample.txt file and summarize its contents."
-)
-
-print("\n--- Agent Response ---")
-print(result.final_output)
+🧠 Final Output:
+[AI agent's summary of the demo.txt file content]
 ```
-This code:
-- Asks the AI to read and summarize our sample file
-- Prints out the AI's response
 
-## Step 6: Exploring More Capabilities 🔍
-```python
-result = await Runner.run(
-    agent,
-    "List all files in the current directory and tell me what you can do with them."
-)
+## How it Works
 
-print("\n--- Agent Response for Directory Listing ---")
-print(result.final_output)
+1. **MCP Server**: The script starts an MCP filesystem server using `npx @modelcontextprotocol/server-filesystem`
+2. **Agent Creation**: Creates an AI agent with access to the MCP server's tools
+3. **File Reading**: The agent uses MCP tools to read files from the `sample_files` directory
+4. **Processing**: The agent processes the file content and provides a summary
+
+## Troubleshooting
+
+- **"Incorrect API key" error**: Make sure you've set a valid OpenAI API key in your `.env` file
+- **"npx not found" error**: Install Node.js and npm, which includes npx
+- **Permission errors**: The MCP server only has access to the `sample_files` directory for security
+
+## Files Structure
+
 ```
-This demonstrates:
-- The AI can also list directories
-- It understands what operations are possible with the files
-
-## Types of MCP Servers 🌐
-The MCP specification defines two types of servers:
-1. **stdio servers** (used in this example) - run as a subprocess of your application
-2. **HTTP over SSE servers** - run remotely, accessed via URL
-
-## Try It Yourself! 🚀
-1. Install the required packages:
-   ```
-   uv add openai-agents python-dotenv
-   npm install -g @modelcontextprotocol/server-filesystem
-   ```
-2. Create a `.env` file with your OpenAI API key:
-   ```
-   OPENAI_API_KEY=your_api_key_here
-   ```
-3. Run the program:
-   ```
-   uv run mcp.py
-   ```
-4. Try modifying the prompts to explore different file operations!
-
-## What You'll Learn 🧠
-- How to connect AI models to external tools using MCP
-- How to give AI assistants access to filesystems
-- How to cache tool information for better performance
-- How to create more powerful AI applications with external capabilities
-
-Happy coding! 🎉 
+16mcp/
+├── mcpbasic.py          # Main demo script
+├── sample_files/        # Directory with files for the agent to read
+│   └── demo.txt         # Sample file with MCP information
+└── README.md           # This file
+``` 
